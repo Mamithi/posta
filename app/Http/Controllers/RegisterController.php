@@ -9,7 +9,6 @@ use Session;
 use Mail;
 use Person;
 use AfricasTalkingGateway;
-use JWTAuth;
 
 
 class RegisterController extends Controller
