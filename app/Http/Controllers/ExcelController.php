@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Bulk;
 use App\View;
-use Excel;
 use DB;
 use Session;
 
