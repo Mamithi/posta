@@ -33,7 +33,7 @@ class PostaRegistrationController extends Controller
                 ));
             }else{
                 return response(array(
-                    "Message" => "This user does not exist",
+                    "Message" => "This user is not registered with Posta Kenya",
                     "code" => 200,
                     "status" => "fail",
                 )); 
