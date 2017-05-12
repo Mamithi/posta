@@ -7,7 +7,7 @@ Route::get('testing', function(){
 	return view('testing');
 });
 Route::get('/', function () {
-    return view('welcome');
+    return view('testing');
 });
 
 $api = app('Dingo\Api\Routing\Router');
