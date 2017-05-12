@@ -256,8 +256,8 @@ class RegisterController extends Controller
             
             $users = DB::table('persons')->insert(['FirstName' => $firstName, 'LastName' => $lastName, 'Phone' => $phone, 'Email' => $email, 'Password' => $password, 'Code' => $code, 'credits'=> $credits]);
            
-            // $this->sendEmail($email);
-            // $this->send($phone, $code);
+             $this->sendEmail($email);
+             $this->send($phone, $code);
             if($users){
             
             return response(array(
