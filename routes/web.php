@@ -2,6 +2,8 @@
 
 // namespace LucaDegasperi\OAuth2Server\Facades;
 
+Route::get('testing', 'App/Http/TestingController@testing');
+
 Route::get('/', function () {
     return view('welcome');
 });
