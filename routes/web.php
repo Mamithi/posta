@@ -2,12 +2,12 @@
 
 // namespace LucaDegasperi\OAuth2Server\Facades;
 
-// Route::get('/testing', 'App/Http/TestingController@testing');
-Route::get('testing', function(){
-	return view('testing');
-});
+ Route::get('testing', 'TestController@testing');
+ //Route::get('/testing', function(){
+ //	return view('testing');
+// });
 Route::get('/', function () {
-    return view('testing');
+    return view('welcome');
 });
 
 $api = app('Dingo\Api\Routing\Router');
