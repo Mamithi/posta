@@ -144,8 +144,14 @@ class ExcelController extends Controller
                    ));
         }
     }
-    }
  }
+}
+        return response(array(
+                                "Message" => "This user does not exist",
+                                "code" => 200,
+                                "status" => "fail",
+                                
+         ));
 }
     /**
      * Show the form for creating a new resource.
