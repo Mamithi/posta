@@ -523,7 +523,7 @@ class PostaRegistrationController extends Controller
                             $phone = $values->Phone;
                          }
                          $alertMessage = "New alert from Posta. Below is the message: ". $message. " Message sent at: " .$date;
-                         $this->sendAlert($phone, $alertMessage);
+                         // $this->sendAlert($phone, $alertMessage);
 
                        
                        $data = DB::table('alerts')->insert(['Box' => $box, 'Code' => $code, 'Alert' => $alert, 'Message' => $message, 'created_at' =>$date]);
