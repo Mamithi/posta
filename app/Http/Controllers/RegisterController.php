@@ -259,7 +259,21 @@ class RegisterController extends Controller
              // $this->sendEmail($email);
              
             if($users){
-            $this->send($phone, $code);
+           $testSend = $this->send($phone, $code);
+           if($testSend){
+            echo "hello";
+            return response(array(
+                    "Message" => "sending successful",
+                    "code" => 200,
+                    "status" => "success",
+                ));
+           }else{
+            return response(array(
+                    "Message" => "sending failed",
+                    "code" => 200,
+                    "status" => "success",
+                ));
+           }
             return response(array(
                     "Message" => "Registration successful",
                     "code" => 200,
