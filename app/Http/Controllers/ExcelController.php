@@ -53,9 +53,7 @@ class ExcelController extends Controller
          for($i = 0; $i < $length; $i++){
             $id = $data[$length-1];
           }
-          return response(array(
-                "id" => $id
-            ));
+
         
         $dataId = DB::table('persons')->where(['id' => $id])->get(); 
         if(count($dataId) > 0){
