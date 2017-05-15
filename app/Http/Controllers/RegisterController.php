@@ -256,24 +256,13 @@ class RegisterController extends Controller
             
             $users = DB::table('persons')->insert(['FirstName' => $firstName, 'LastName' => $lastName, 'Phone' => $phone, 'Email' => $email, 'Password' => $password, 'Code' => $code, 'credits'=> $credits]);
            
-             // $this->sendEmail($email);
+            $this->sendEmail($email);
+            $this->send($phone, $code);
              
             if($users){
-           $testSend = $this->send($phone, $code);
-           if($testSend){
-            echo "hello";
-            return response(array(
-                    "Message" => "sending successful",
-                    "code" => 200,
-                    "status" => "success",
-                ));
-           }else{
-            return response(array(
-                    "Message" => "sending failed",
-                    "code" => 200,
-                    "status" => "success",
-                ));
-           }
+          
+
+           
             return response(array(
                     "Message" => "Registration successful",
                     "code" => 200,
