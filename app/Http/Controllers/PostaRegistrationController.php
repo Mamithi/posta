@@ -338,19 +338,22 @@ class PostaRegistrationController extends Controller
         $personId = $request->input('personId');
         $amount = $request->input('amount');
         $getData = DB::table('persons')
-                    ->select('credits')
+                    ->select('credits', 'usedCredits')
                     ->where('id', $personId)
                     ->get();
         foreach ($getData as $value) {
                 $credits = $value->credits;
+                $usedCredits = $value->usedCredits;
         }
         $updatedCredit = $credits + $amount;
+        $remCredits = $updatedCredit-$usedCredits;
         $data = DB::table('persons')
                     ->where('id', $personId)
                     ->update(['credits' => $updatedCredit]);
         if(count($data) > 0){
+
             return response(array(
-                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $updatedCredit. ".",
+                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $remCredit. ".",
                 "code" => 200,
                 "status" => "success",
                 ));
