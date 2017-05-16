@@ -339,7 +339,7 @@ class PostaRegistrationController extends Controller
         $amount = $request->input('amount');
         $getData = DB('persons')
                     ->select('credits')
-                    ->where('id', $personId);
+                    ->where('id', $personId)
                     ->get();
         foreach ($getData as $value) {
                 $credits = $value->credits;
