@@ -337,7 +337,7 @@ class PostaRegistrationController extends Controller
     public function updateCredits(Request $request){
         $personId = $request->input('personId');
         $amount = $request->input('amount');
-        $getData = DB('persons')
+        $getData = DB::table('persons')
                     ->select('credits')
                     ->where('id', $personId)
                     ->get();
@@ -345,7 +345,7 @@ class PostaRegistrationController extends Controller
                 $credits = $value->credits;
         }
         $updatedCredit = $credits + $amount;
-        $data = DB('persons')
+        $data = DB::table('persons')
                     ->where('id', $personId)
                     ->update(['credits' => $updatedCredit]);
         if(count($data) > 0){
