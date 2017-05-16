@@ -165,7 +165,7 @@ $api->version('v1', function($api){
 
 
 //history search
-$api->version('v1', function($api){
+$api->version('v1', ['middleware' => 'cors'], function($api){
 	$api->post('history','App\Http\Controllers\SearchController@history');
 });
 
@@ -173,11 +173,11 @@ $api->version('v1',['middleware' => 'web'], function($api){
 	$api->post('historyData','App\Http\Controllers\SearchController@historyData');
 });
 
-$api->version('v1', function($api){
+$api->version('v1', ['middleware' => 'cors'], function($api){
 	$api->post('usedCredits','App\Http\Controllers\PostaRegistrationController@usedCredits');
 });
 
-$api->version('v1', function($api){
+$api->version('v1', ['middleware' => 'cors'], function($api){
 	$api->post('updateCredits','App\Http\Controllers\PostaRegistrationController@updateCredits');
 });
 
@@ -206,13 +206,13 @@ Route::get('handleCallback', ['as' => 'handleCallback', 'uses'=>'PesapalControll
     Route::get('paymentconfirmation', 'PaymentController@paymentconfirmation');
 // });
 
-$api->version('v1', function($api){
+$api->version('v1', ['middleware' => 'cors'],function($api){
 	$api->post('fetchProfile','App\Http\Controllers\RegisterController@fetchProfile');
 });
 $api->version('v1', function($api){
 	$api->post('getUserData','App\Http\Controllers\PostaRegistrationController@getUserData');
 });
-$api->version('v1', function($api){
+$api->version('v1', ['middleware' => 'cors'], function($api){
 	$api->post('transactionData','App\Http\Controllers\PostaRegistrationController@transactionData');
 });
 $api->version('v1', function($api){
