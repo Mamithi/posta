@@ -177,6 +177,10 @@ $api->version('v1', function($api){
 	$api->post('usedCredits','App\Http\Controllers\PostaRegistrationController@usedCredits');
 });
 
+$api->version('v1', function($api){
+	$api->post('updateCredits','App\Http\Controllers\PostaRegistrationController@updateCredits');
+});
+
 //Pesapal
 $api->version('v1', function($api){
 	$api->post('pesapalIframe','App\Http\Controllers\PesapalController@pesapalIframe');

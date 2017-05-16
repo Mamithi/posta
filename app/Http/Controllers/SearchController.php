@@ -88,6 +88,12 @@ class SearchController extends Controller
             
            }
           }
+         }else{
+            return response(array(
+                "Message" => "This user does not exist",
+                "code" => 209,
+                "status" => "fail",
+             ));
          }
         
         }

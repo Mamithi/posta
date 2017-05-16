@@ -305,7 +305,7 @@ class PostaRegistrationController extends Controller
         $phone = $request->input('phone');
         $email = $request->input('email');
         $type = $request->input('type');
-        $reference = rand(10009, 99999);
+        $reference = $request->input('reference');
         $description = $request->input('description');
         $amount = $request->input('amount');
         $transaction_id = "null";
@@ -333,6 +333,34 @@ class PostaRegistrationController extends Controller
             }
       
         
+    }
+    public function updateCredits(Request $request){
+        $personId = $request->input('personId');
+        $amount = $request->input('amount');
+        $getData = DB('persons')
+                    ->select('credits')
+                    ->where('id', $personId);
+                    ->get();
+        foreach ($getData as $value) {
+                $credits = $value->credits;
+        }
+        $updatedCredit = $credits + $amount;
+        $data=DB::table('persons')
+                    ->where('id', $personId)
+                    ->update(['credits' => $updatedCredit]);
+        if(count($data) > 0){
+            return response(array(
+                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $updatedCredit. ".",
+                "code" => 200,
+                "status" => "success",
+                ));
+        }else{
+            return response(array(
+                "Message" => "Dear customer your purchase of" .$amount. " credits has failed. Please try again later",
+                "code" => 200,
+                "status" => "fail"
+                ));
+        }
     }
     public function getTransactionData(Request $request){
         $person_id = $request->input('person_id');
