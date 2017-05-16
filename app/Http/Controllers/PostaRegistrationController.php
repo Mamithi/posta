@@ -353,7 +353,7 @@ class PostaRegistrationController extends Controller
         if(count($data) > 0){
 
             return response(array(
-                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $remCredits. ".",
+                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $remCredits. ". Go back home or click verify to verify box number",
                 "code" => 200,
                 "status" => "success",
                 ));
