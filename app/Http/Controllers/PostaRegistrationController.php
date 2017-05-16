@@ -346,14 +346,14 @@ class PostaRegistrationController extends Controller
                 $usedCredits = $value->usedCredits;
         }
         $updatedCredit = $credits + $amount;
-        $remCredits = $updatedCredit-$usedCredits;
+        $remCredits = $updatedCredit - $usedCredits;
         $data = DB::table('persons')
                     ->where('id', $personId)
                     ->update(['credits' => $updatedCredit]);
         if(count($data) > 0){
 
             return response(array(
-                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $remCredit. ".",
+                "Message" => "You have successfully bought " .$amount. " credits and your new credit balance is ". $remCredits. ".",
                 "code" => 200,
                 "status" => "success",
                 ));
