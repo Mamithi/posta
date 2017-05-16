@@ -31,6 +31,7 @@ class Kernel extends HttpKernel
             // \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \LucaDegasperi\OAuth2Server\Middleware\OAuthExceptionHandlerMiddleware::class,
+            \Barryvdh\Cors\HandleCors::class,
         ],
 
         'api' => [
@@ -57,6 +58,6 @@ class Kernel extends HttpKernel
         'jwt.refresh' => TymonJWTAuth\MiddlewareRefreshToken::class,
         'apiguard' => \Chrisbjr\ApiGuard\Http\Middleware\ApiGuard::class,
         'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
-       
+
     ];
 }
