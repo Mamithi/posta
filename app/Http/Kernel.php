@@ -57,5 +57,6 @@ class Kernel extends HttpKernel
         'jwt.refresh' => TymonJWTAuth\MiddlewareRefreshToken::class,
         'apiguard' => \Chrisbjr\ApiGuard\Http\Middleware\ApiGuard::class,
         'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

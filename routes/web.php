@@ -40,7 +40,7 @@ $api->version('v1', function($api){
 	$api->post('valid','App\Http\Controllers\RegisterController@valid');
 });
 
-$api->version('v1', ['middleware' => 'web'], function($api){
+$api->version('v1', ['middleware' => 'cors'], function($api){
 	$api->post('login','App\Http\Controllers\RegisterController@login');
 });
 
