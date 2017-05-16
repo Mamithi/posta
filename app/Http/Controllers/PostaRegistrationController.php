@@ -345,7 +345,7 @@ class PostaRegistrationController extends Controller
                 $credits = $value->credits;
         }
         $updatedCredit = $credits + $amount;
-        $data=DB::table('persons')
+        $data = DB('persons')
                     ->where('id', $personId)
                     ->update(['credits' => $updatedCredit]);
         if(count($data) > 0){
