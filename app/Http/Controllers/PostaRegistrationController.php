@@ -400,6 +400,28 @@ class PostaRegistrationController extends Controller
             ));
         }
     }
+    public function updateTrackingId(Request $request){
+        $trackingId = $request->input('trackingId');
+        $reference = $request->input('reference');
+        $data = DB::table('transactions')
+                    ->where('Reference', $reference)
+                    ->update(['transaction_id' => $trackingId]);
+        if(count($data) > 0){
+            return response(array(
+                    "Message" => "This is your tracking id",
+                    "code" => 200,
+                    "status" => "success"
+                ));
+        }else{
+            return response(array(
+                    "Message" => "Tracking id not updated",
+                    "code" => 200,
+                    "status" => "fail"
+                ));
+        }
+
+
+    }
 
      public function loginAdmin(Request $request){
                     $remember = false;

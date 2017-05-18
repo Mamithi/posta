@@ -180,6 +180,9 @@ $api->version('v1', function($api){
 $api->version('v1', function($api){
 	$api->post('updateCredits','App\Http\Controllers\PostaRegistrationController@updateCredits');
 });
+$api->version('v1', function($api){
+	$api->post('updateTrackingId','App\Http\Controllers\PostaRegistrationController@updateTrackingId');
+});
 
 //Pesapal
 $api->version('v1', function($api){
