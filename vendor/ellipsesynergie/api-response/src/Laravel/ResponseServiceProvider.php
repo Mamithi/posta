@@ -2,9 +2,8 @@
 
 namespace EllipseSynergie\ApiResponse\Laravel;
 
-use Input;
+use EllipseSynergie\ApiResponse\Serializer\Serializer;
 use Illuminate\Support\ServiceProvider;
-use EllipseSynergie\ApiResponse\Laravel\Response;
 use League\Fractal\Manager;
 
 /**
@@ -18,13 +17,40 @@ use League\Fractal\Manager;
  */
 class ResponseServiceProvider extends ServiceProvider
 {
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $response = $this->bootResponse();
+        $this->registerMacro($response);
+    }
 
     /**
-     * Indicates if loading of the provider is deferred.
+     * Boot response
      *
-     * @var bool
+     * @return Response
      */
-    protected $defer = false;
+    private function bootResponse()
+    {
+        $manager = new Manager;
+
+        // Custom serializer because DataArraySerializer doesn't provide the opportunity to change the resource key
+        $manager->setSerializer(new Serializer());
+
+        // Are we going to try and include embedded data?
+        $manager->parseIncludes(explode(',', $this->app['Illuminate\Http\Request']->get('include')));
+
+        // Return the Response object
+        $response = new Response($manager);
+
+        //Set the response instance properly
+        $this->app->instance('EllipseSynergie\ApiResponse\Contracts\Response', $response);
+
+        return $response;
+    }
 
     /**
      * Register the service provider.
@@ -33,22 +59,19 @@ class ResponseServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Register response macro
-        \Response::macro('api', function () {
+        //
+    }
 
-            $manager = new Manager;
-
-            // If you have to customize the manager instance, like setting a custom serializer,
-            // I strongly suggest you to create your own service provider and add you manager configuration action here
-            // Here some example if you want to set a custom serializer :
-            // $manager->setSerializer(\League\Fractal\Serializer\JsonApiSerializer);
-
-
-            // Are we going to try and include embedded data?
-            $manager->parseIncludes(explode(',', Input::get('include')));
-
-            // Return the Response object
-            return new Response($manager);
+    /**
+     * Register response macro
+     *
+     * @deprecated We still register macro for backward compatibility, but DO NOT USE THIS MACRO ANYMORE !
+     * @param Response $response
+     */
+    private function registerMacro($response)
+    {
+        \Response::macro('api', function () use ($response) {
+            return $response;
         });
     }
 }

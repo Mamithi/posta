@@ -4,9 +4,9 @@ namespace EllipseSynergie\ApiResponse\Laravel;
 
 use EllipseSynergie\ApiResponse\AbstractResponse;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use Illuminate\Support\Facades\Response as IlluminateResponse;
-use Illuminate\Validation\Validator;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Validation\Validator;
 use League\Fractal\Resource\Collection;
 
 /**
@@ -23,25 +23,28 @@ class Response extends AbstractResponse
     /**
      * @param array $array
      * @param array $headers
-     * @return \Illuminate\Http\Response
+     * @return ResponseFactory
      */
-    public function withArray(array $array, array $headers = array())
+    public function withArray(array $array, array $headers = [])
     {
-        return IlluminateResponse::json($array, $this->statusCode, $headers);
+        return response()->json($array, $this->statusCode, $headers);
     }
 
     /**
      * Respond with a paginator, and a transformer.
      *
-     * @param Paginator $paginator
+     * @param LengthAwarePaginator $paginator
      * @param callable|\League\Fractal\TransformerAbstract $transformer
      * @param string $resourceKey
      * @param array $meta
-     * @return \Illuminate\Http\Response
+     * @return ResponseFactory
      */
-    public function withPaginator(Paginator $paginator, $transformer, $resourceKey = null, $meta = [])
+    public function withPaginator(LengthAwarePaginator $paginator, $transformer, $resourceKey = null, $meta = [])
     {
-        $resource = new Collection($paginator->getCollection(), $transformer, $resourceKey);
+        $queryParams = array_diff_key($_GET, array_flip(['page']));
+        $paginator->appends($queryParams);
+        
+        $resource = new Collection($paginator->items(), $transformer, $resourceKey);
         $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
 
         foreach ($meta as $metaKey => $metaValue) {
@@ -56,11 +59,11 @@ class Response extends AbstractResponse
     /**
      * Generates a Response with a 400 HTTP header and a given message from validator
      *
-     * @param $validator
-     * @return \Illuminate\Http\Response
+     * @param Validator $validator
+     * @return ResponseFactory
      */
     public function errorWrongArgsValidator(Validator $validator)
     {
-        return $this->errorWrongArgs($validator->messages()->toArray());
+        return $this->errorWrongArgs($validator->getMessageBag()->toArray());
     }
-} 
+}

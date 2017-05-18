@@ -2,6 +2,7 @@
 
 namespace EllipseSynergie\ApiResponse;
 
+use EllipseSynergie\ApiResponse\Contracts\Response;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Manager;
@@ -17,7 +18,7 @@ use League\Fractal\Pagination\Cursor;
  * @author Maxime Beaudoin <maxime.beaudoin@ellipse-synergie.com>
  * @author Phil Sturgeon <email@philsturgeon.co.uk>
  */
-abstract class AbstractResponse
+abstract class AbstractResponse implements Response
 {
 
     const CODE_WRONG_ARGS = 'GEN-WRONG-ARGS';
@@ -35,6 +36,9 @@ abstract class AbstractResponse
     const CODE_METHOD_NOT_ALLOWED = 'GEN-METHOD-NOT-ALLOWED';
 
     const CODE_UNWILLING_TO_PROCESS = 'GEN-UNWILLING-TO-PROCESS';
+    
+    const CODE_UNPROCESSABLE = 'GEN-UNPROCESSABLE';
+    
 
     /**
      * HTTP Status code
@@ -95,7 +99,7 @@ abstract class AbstractResponse
      * @param array $array
      * @param array $headers
      */
-    abstract public function withArray(array $array, array $headers = array());
+    abstract public function withArray(array $array, array $headers = []);
 
     /**
      * Response for one item
@@ -104,20 +108,20 @@ abstract class AbstractResponse
      * @param callable|\League\Fractal\TransformerAbstract $transformer
      * @param string $resourceKey
      * @param array $meta
+     * @param array $headers
      * @return mixed
      */
-    public function withItem($data, $transformer, $resourceKey = null, $meta = [])
+    public function withItem($data, $transformer, $resourceKey = null, $meta = [], array $headers = [])
     {
         $resource = new Item($data, $transformer, $resourceKey);
 
-        foreach($meta as $metaKey => $metaValue)
-        {
+        foreach ($meta as $metaKey => $metaValue) {
             $resource->setMetaValue($metaKey, $metaValue);
         }
 
         $rootScope = $this->manager->createData($resource);
 
-        return $this->withArray($rootScope->toArray());
+        return $this->withArray($rootScope->toArray(), $headers);
     }
 
     /**
@@ -128,14 +132,14 @@ abstract class AbstractResponse
      * @param string $resourceKey
      * @param Cursor $cursor
      * @param array $meta
+     * @param array $headers
      * @return mixed
      */
-    public function withCollection($data, $transformer, $resourceKey = null, Cursor $cursor = null, $meta = [])
+    public function withCollection($data, $transformer, $resourceKey = null, Cursor $cursor = null, $meta = [], array $headers = [])
     {
         $resource = new Collection($data, $transformer, $resourceKey);
 
-        foreach($meta as $metaKey => $metaValue)
-        {
+        foreach ($meta as $metaKey => $metaValue) {
             $resource->setMetaValue($metaKey, $metaValue);
         }
 
@@ -145,7 +149,7 @@ abstract class AbstractResponse
 
         $rootScope = $this->manager->createData($resource);
 
-        return $this->withArray($rootScope->toArray());
+        return $this->withArray($rootScope->toArray(), $headers);
     }
 
     /**
@@ -153,104 +157,127 @@ abstract class AbstractResponse
      *
      * @param string $message
      * @param string $errorCode
+     * @param array  $headers
      * @return mixed
      */
-    public function withError($message, $errorCode)
+    public function withError($message, $errorCode, array $headers = [])
     {
         return $this->withArray([
-            'error' => [
-                'code' => $errorCode,
-                'http_code' => $this->statusCode,
-                'message' => $message
-            ]
-        ]);
+                'error' => [
+                    'code' => $errorCode,
+                    'http_code' => $this->statusCode,
+                    'message' => $message
+                ]
+            ],
+            $headers
+        );
     }
 
     /**
      * Generates a response with a 403 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorForbidden($message = 'Forbidden')
+    public function errorForbidden($message = 'Forbidden', array $headers = [])
     {
-        return $this->setStatusCode(403)->withError($message, self::CODE_FORBIDDEN);
+        return $this->setStatusCode(403)->withError($message, static::CODE_FORBIDDEN, $headers);
     }
 
     /**
      * Generates a response with a 500 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorInternalError($message = 'Internal Error')
+    public function errorInternalError($message = 'Internal Error', array $headers = [])
     {
-        return $this->setStatusCode(500)->withError($message, self::CODE_INTERNAL_ERROR);
+        return $this->setStatusCode(500)->withError($message, static::CODE_INTERNAL_ERROR, $headers);
     }
 
     /**
      * Generates a response with a 404 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorNotFound($message = 'Resource Not Found')
+    public function errorNotFound($message = 'Resource Not Found', array $headers = [])
     {
-        return $this->setStatusCode(404)->withError($message, self::CODE_NOT_FOUND);
+        return $this->setStatusCode(404)->withError($message, static::CODE_NOT_FOUND, $headers);
     }
 
     /**
      * Generates a response with a 401 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorUnauthorized($message = 'Unauthorized')
+    public function errorUnauthorized($message = 'Unauthorized', array $headers = [])
     {
-        return $this->setStatusCode(401)->withError($message, self::CODE_UNAUTHORIZED);
+        return $this->setStatusCode(401)->withError($message, static::CODE_UNAUTHORIZED, $headers);
     }
 
     /**
      * Generates a response with a 400 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorWrongArgs($message = 'Wrong Arguments')
+    public function errorWrongArgs($message = 'Wrong Arguments', array $headers = [])
     {
-        return $this->setStatusCode(400)->withError($message, self::CODE_WRONG_ARGS);
+        return $this->setStatusCode(400)->withError($message, static::CODE_WRONG_ARGS, $headers);
     }
 
     /**
      * Generates a response with a 410 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorGone($message = 'Resource No Longer Available')
+    public function errorGone($message = 'Resource No Longer Available', array $headers = [])
     {
-        return $this->setStatusCode(410)->withError($message, self::CODE_GONE);
+        return $this->setStatusCode(410)->withError($message, static::CODE_GONE, $headers);
     }
 
     /**
      * Generates a response with a 405 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorMethodNotAllowed($message = 'Method Not Allowed')
+    public function errorMethodNotAllowed($message = 'Method Not Allowed', array $headers = [])
     {
-        return $this->setStatusCode(405)->withError($message, self::CODE_METHOD_NOT_ALLOWED);
+        return $this->setStatusCode(405)->withError($message, static::CODE_METHOD_NOT_ALLOWED, $headers);
     }
 
     /**
      * Generates a Response with a 431 HTTP header and a given message.
      *
      * @param string $message
+     * @param array  $headers
      * @return mixed
      */
-    public function errorUnwillingToProcess($message = 'Server is unwilling to process the request')
+    public function errorUnwillingToProcess($message = 'Server is unwilling to process the request', array $headers = [])
     {
-        return $this->setStatusCode(431)->withError($message, self::CODE_UNWILLING_TO_PROCESS);
+        return $this->setStatusCode(431)->withError($message, static::CODE_UNWILLING_TO_PROCESS, $headers);
+    }
+    
+    /**
+     * Generates a Response with a 422 HTTP header and a given message.
+     *
+     * @param string $message
+     * @param array  $headers
+     * @return mixed
+     */
+    public function errorUnprocessable($message = 'Unprocessable Entity', array $headers = [])
+    {
+        return $this->setStatusCode(422)->withError($message, static::CODE_UNPROCESSABLE, $headers);
     }
 }
