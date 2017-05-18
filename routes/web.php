@@ -206,7 +206,7 @@ Route::get('handleCallback', ['as' => 'handleCallback', 'uses'=>'PesapalControll
     Route::get('paymentconfirmation', 'PaymentController@paymentconfirmation');
 // });
 
-$api->version('v1', ['middleware' => 'cors'],function($api){
+$api->version('v1',function($api){
 	$api->post('fetchProfile','App\Http\Controllers\RegisterController@fetchProfile');
 });
 $api->version('v1', function($api){
