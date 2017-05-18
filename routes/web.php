@@ -212,7 +212,7 @@ $api->version('v1', ['middleware' => 'cors'],function($api){
 $api->version('v1', function($api){
 	$api->post('getUserData','App\Http\Controllers\PostaRegistrationController@getUserData');
 });
-$api->version('v1', ['middleware' => 'cors'], function($api){
+$api->version('v1', function($api){
 	$api->post('transactionData','App\Http\Controllers\PostaRegistrationController@transactionData');
 });
 $api->version('v1', function($api){
