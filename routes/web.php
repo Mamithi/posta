@@ -165,7 +165,7 @@ $api->version('v1', function($api){
 
 
 //history search
-$api->version('v1', ['middleware' => 'cors'], function($api){
+$api->version('v1', function($api){
 	$api->post('history','App\Http\Controllers\SearchController@history');
 });
 
@@ -173,11 +173,11 @@ $api->version('v1',['middleware' => 'web'], function($api){
 	$api->post('historyData','App\Http\Controllers\SearchController@historyData');
 });
 
-$api->version('v1', ['middleware' => 'cors'], function($api){
+$api->version('v1', function($api){
 	$api->post('usedCredits','App\Http\Controllers\PostaRegistrationController@usedCredits');
 });
 
-$api->version('v1', ['middleware' => 'cors'], function($api){
+$api->version('v1', function($api){
 	$api->post('updateCredits','App\Http\Controllers\PostaRegistrationController@updateCredits');
 });
 
