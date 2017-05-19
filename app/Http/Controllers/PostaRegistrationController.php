@@ -662,7 +662,7 @@ class PostaRegistrationController extends Controller
                              "Message" => "Alert saved successfully",
                              "code" => 200,
                              "status" => "success",
-                             
+                             "len" => $len
                         ));
                 }else{
                     return response(array(
@@ -676,7 +676,7 @@ class PostaRegistrationController extends Controller
                              "Message" => "Please both the alert and the message",
                              "code" => 200,
                              "status" => "fail",
-                             
+                             "len" => $len
                         ));
             }
   }
