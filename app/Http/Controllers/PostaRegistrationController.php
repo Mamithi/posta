@@ -654,15 +654,15 @@ class PostaRegistrationController extends Controller
   public function addAlert(Request $request){
             $type = $request->input('type');
             $message = $request->input('message');
-            $len = count($message);
-            if(count($type) > 0 && count($message) > 5){
+            $len = strlen($message);
+            if(count($type) > 0 && count($message) > 1){
                 $insert = DB::table('alertTypes')->insert(['Type' => $type, 'Message' => $message]);
                 if($insert){
                     return response(array(
                              "Message" => "Alert saved successfully",
                              "code" => 200,
                              "status" => "success",
-                             $len
+                             
                         ));
                 }else{
                     return response(array(
@@ -676,7 +676,7 @@ class PostaRegistrationController extends Controller
                              "Message" => "Please both the alert and the message",
                              "code" => 200,
                              "status" => "fail",
-                             $len
+                             
                         ));
             }
   }
