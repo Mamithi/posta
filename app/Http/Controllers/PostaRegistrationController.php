@@ -654,7 +654,8 @@ class PostaRegistrationController extends Controller
   public function addAlert(Request $request){
             $type = $request->input('type');
             $message = $request->input('message');
-            if(count($type) > 0){
+
+            if(count($type) > 0 && count($message) > 0){
                 $insert = DB::table('alertTypes')->insert(['Type' => $type, 'Message' => $message]);
                 if($insert){
                     return response(array(
@@ -671,7 +672,7 @@ class PostaRegistrationController extends Controller
                 }
             }else{
                 return response(array(
-                             "Message" => "Please enter alert ",
+                             "Message" => "Please both the alert and the message",
                              "code" => 200,
                              "status" => "fail",
                         ));
