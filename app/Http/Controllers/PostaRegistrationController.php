@@ -655,7 +655,7 @@ class PostaRegistrationController extends Controller
             $type = $request->input('type');
             $message = $request->input('message');
             $len = count($message);
-            if(count($type) > 0 && count($message) > 0){
+            if(count($type) > 0 && count($message) > 5){
                 $insert = DB::table('alertTypes')->insert(['Type' => $type, 'Message' => $message]);
                 if($insert){
                     return response(array(
