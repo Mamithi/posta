@@ -253,7 +253,7 @@ class SearchController extends Controller
         for($i=0; $i<count($values); $i++){
          $check = DB::table('historys')
                 ->select('box', 'name', 'town', 'code', 'status', 'created_at')->where(['person_id' => $person_id])
-                ->orderBy('person_id', 'desc')
+                ->orderBy('id', 'desc')
                 ->get();
         foreach($check as $checks){
             $box = $checks->box;
