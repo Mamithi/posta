@@ -134,7 +134,10 @@ class PostaRegistrationController extends Controller
         $box = $request->input('box');
         $code = $request->input('code');
         if(count($box) > 0  && count($code) > 0){
-            $data = DB::table('alerts')->select('Box', 'Code', 'Alert', 'Message', 'created_at')->where(['Box'=>$box, 'Code'=>$code])->get();
+            $data = DB::table('alerts')
+                        ->select('Box', 'Code', 'Alert', 'Message', 'created_at')->where(['Box'=>$box, 'Code'=>$code])
+                        ->orderBy('id', 'desc')
+                        ->get();
             if(count($data) > 0){
                 return response(array(
                      'notifications' =>$data-> toArray()
