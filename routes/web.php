@@ -81,6 +81,9 @@ $api->version('v1', function($api){
 $api->version('v1', function($api){
 	$api->get('transactions','App\Http\Controllers\DashboardController@transactions');
 });
+$api->version('v1', function($api){
+	$api->get('searches','App\Http\Controllers\DashboardController@searches');
+});
 
 
 

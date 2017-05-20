@@ -62,6 +62,23 @@ class DashboardController extends Controller
                 ));
         }
     }
+    public function searches()
+    {
+        $data = DB::table('historys')
+            ->select('name', 'box', 'code', 'town', 'status', 'created_at')
+            ->orderBy('name', 'desc')
+            ->get();
+
+        if(count($data) > 0){
+            return response(array(
+                'searches' =>$data-> toArray()
+                ));
+        }else{
+               return response(array(
+                 "No searches has been made"
+                ));
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
