@@ -28,6 +28,23 @@ class DashboardController extends Controller
                 ));
         }
     }
+     public function subscribedUsers()
+    {
+        $data = DB::table('persons')
+            ->select('FirstName', 'LastName', 'Email', 'Phone', 'credits', 'Box', 'CodeNumber')
+            ->orderBy('FirstName', 'desc')
+            ->get();
+
+        if(count($data) > 0){
+            return response(array(
+                'subscribed' =>$data-> toArray()
+                ));
+        }else{
+               return response(array(
+                 "No  users has subscribed"
+                ));
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
