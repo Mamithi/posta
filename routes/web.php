@@ -73,7 +73,7 @@ $api->version('v1', function($api){
 
 //Filling admin dashboard
 $api->version('v1', function($api){
-	$api->post('registeredUsers','App\Http\Controllers\DashboardController@registeredUsers');
+	$api->get('registeredUsers','App\Http\Controllers\DashboardController@registeredUsers');
 });
 
 
