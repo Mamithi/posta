@@ -31,7 +31,8 @@ class DashboardController extends Controller
      public function subscribedUsers()
     {
         $data = DB::table('persons')
-            ->select('FirstName', 'LastName', 'Email', 'Phone', 'credits', 'Box', 'CodeNumber')
+            ->select('FirstName', 'LastName', 'Email', 'Phone', 'credits', 'Box', 'CodeNumber', 'Subscribe')
+            ->where(['Subscribe' => 'yes'])
             ->orderBy('FirstName', 'desc')
             ->get();
 
