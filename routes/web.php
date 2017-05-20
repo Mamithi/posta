@@ -78,6 +78,9 @@ $api->version('v1', function($api){
 $api->version('v1', function($api){
 	$api->get('subscribedUsers','App\Http\Controllers\DashboardController@subscribedUsers');
 });
+$api->version('v1', function($api){
+	$api->get('transactions','App\Http\Controllers\DashboardController@transactions');
+});
 
 
 

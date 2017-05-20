@@ -45,6 +45,23 @@ class DashboardController extends Controller
                 ));
         }
     }
+    public function transactions()
+    {
+        $data = DB::table('transactions')
+            ->select('FirstName', 'LastName', 'Email', 'Phone', 'Reference', 'Amount')
+            ->orderBy('FirstName', 'desc')
+            ->get();
+
+        if(count($data) > 0){
+            return response(array(
+                'transactions' =>$data-> toArray()
+                ));
+        }else{
+               return response(array(
+                 "No  transactions have been made"
+                ));
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
