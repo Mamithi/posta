@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public function registeredUsers()
     {
         $data = DB::table('persons')
-            ->select('FirstName', 'LastName', 'Email', 'Phone', 'credits', 'Subcribe')
+            ->select('FirstName', 'LastName', 'Email', 'Phone', 'credits', 'Subscribe')
             ->orderBy('FirstName', 'desc')
             ->get();
 
