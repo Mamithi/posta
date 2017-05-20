@@ -71,6 +71,14 @@ $api->version('v1', function($api){
 });
 
 
+//Filling admin dashboard
+$api->version('v1', function($api){
+	$api->post('registeredUsers','App\Http\Controllers\DashboardController@registeredUsers');
+});
+
+
+
+
 //Routes to import and export excel sheets for bulk verification
 $api->version('v1', function($api){
 	$api->get('downloadExcel','App\Http\Controllers\ExcelController@downloadExcel');
