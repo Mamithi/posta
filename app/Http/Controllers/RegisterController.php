@@ -448,7 +448,7 @@ class RegisterController extends Controller
         $email = $request->input('email');
         $phone = $request->input('phone');
         if(count($email) > 0){
-        $token = str_random(255);
+        $token = str_random(20);
          if(filter_var($email, FILTER_VALIDATE_EMAIL) === false ){
             return response(array(
                 "Message" => "Please enter a valid Email",
@@ -456,11 +456,12 @@ class RegisterController extends Controller
                 "status" => "invalid",
              ));
         }else{
+            $data = DB::table('persons')->where(['Email' => $email])->get();
+            if(count($data) > 0){
             $user = array(
                     'email' => $email,
                     'subject' => 'Reset your password'
                 );
-            http://www.twendedigital.co.ke/lm/posta/recovery.php
             $sent = Mail::raw('Please follow this link to reset your password http://www.twendedigital.co.ke/lm/posta/recovery.php?email='.$email. '&token='.$token, function($message) use ($user){
 
                 $message->to($user['email']);
@@ -486,6 +487,13 @@ class RegisterController extends Controller
                 "status" => "success",
              ));
           }
+      }else{
+            return response(array(
+                "Message" => "This email is not registered with Posta Kenya, Please use the email you used during registration",
+                "code" => 209,
+                "status" => "fail",
+             ));
+      }
       }else if(count($phone) > 0){
         if(strlen($phone) != 10 && strlen($phone) != 13 ){
             return response(array(
