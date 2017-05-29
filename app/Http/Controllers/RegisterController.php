@@ -460,7 +460,8 @@ class RegisterController extends Controller
                     'email' => $email,
                     'subject' => 'Reset your password'
                 );
-            $sent = Mail::raw('Please follow this link to reset your password http://localhost/Posta/recovery.php?email='.$email. '&token='.$token, function($message) use ($user){
+            http://www.twendedigital.co.ke/lm/posta/recovery.php
+            $sent = Mail::raw('Please follow this link to reset your password http://www.twendedigital.co.ke/lm/posta/recovery.php?email='.$email. '&token='.$token, function($message) use ($user){
 
                 $message->to($user['email']);
                 $message->subject($user['subject']);
