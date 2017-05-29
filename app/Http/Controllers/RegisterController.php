@@ -447,7 +447,10 @@ class RegisterController extends Controller
     public function forgot(Request $request){
         $email = $request->input('email');
         $phone = $request->input('phone');
+
         if(count($email) > 0){
+         $data = DB::table('persons')->where(['Email' => $email])->get();
+         if(count($data) > 0){
         $token = str_random(20);
          if(filter_var($email, FILTER_VALIDATE_EMAIL) === false ){
             return response(array(
@@ -456,8 +459,7 @@ class RegisterController extends Controller
                 "status" => "invalid",
              ));
         }else{
-            $data = DB::table('persons')->where(['Email' => $email])->get();
-            if(count($data) > 0){
+            
             $user = array(
                     'email' => $email,
                     'subject' => 'Reset your password'
