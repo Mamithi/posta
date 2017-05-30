@@ -256,7 +256,7 @@ class RegisterController extends Controller
             
             $users = DB::table('persons')->insert(['FirstName' => $firstName, 'LastName' => $lastName, 'Phone' => $phone, 'Email' => $email, 'Password' => $password, 'Code' => $code, 'credits'=> $credits]);
            
-            // $this->sendEmail($email);
+            $this->sendEmail($email);
             $this->send($phone, $code);
              
             if($users){
@@ -275,7 +275,7 @@ class RegisterController extends Controller
                     'subject' => 'Verification Code',
                     
                 );
-            $sent = Mail::raw('Please follow this link to verify your account  http://localhost/Posta/verify.php', function($message) use ($user){
+            $sent = Mail::raw('Please follow this link to verify your account  http://wwww.twendedigital.co.ke/lm/posta/verify.php', function($message) use ($user){
 
                 $message->to($user['email']);
                 $message->subject($user['subject']);
