@@ -48,7 +48,7 @@ class ExcelController extends Controller
 
     public function importExcel(Request $request){
 
-         $data =$request->input('data');
+         $data =$request->input('Sheet1');
          $length = count($data);
          for($i = 0; $i < $length; $i++){
             $id = $data[$length-1];

@@ -176,7 +176,7 @@ class RegisterController extends Controller
                     'subject' => 'Activate your account',
                     
                 );
-            $sent = Mail::raw('Please follow this link to activate your account http://localhost/Posta/activate.php?email='.$email. '&token='.$token, function($message) use ($user){
+            $sent = Mail::raw('Please follow this link to activate your account http://www.twendedigital.co.ke/lm/posta/activate.php?email='.$email. '&token='.$token, function($message) use ($user){
 
                 $message->to($user['email']);
                 $message->subject($user['subject']);
@@ -412,26 +412,67 @@ class RegisterController extends Controller
               }
         }
 
-        public function loginCompany(Request $request){
-                    $email = $request->input('email');
-                    $password = $request->input('password');
 
-                    $checkLogin = DB::table('companys')->where(['Email'=>$email, 'Password'=>$password])->get();
-                    if(count($checkLogin) > 0){
-                        $count = count($checkLogin);
-                        $persons = DB::table('companys')->select('name')->where(['Email'=>$email])->get();
-                        session_start();
+public function loginCompany(Request $request){
+                    $remember = false;
+                    $email = $request->input('email');
+                    $phone = $request->input('phone');
+                    $password = $request->input('password');
+                    $remember_me = $request->input('remember');
+                    
+                    $check = 0;
+                    
+                    
+                    
+                    if(count($phone) > 0){
+                        $usePhone = DB::table('companys')->where(['Phone'=>$phone, 'Password'=>$password], $remember)->get();
+                        if(count($usePhone) > 0){
+                            $check = 1;
+                        }
+                    }
+                    if(count($email) > 0){
+                        $useEmail = DB::table('companys')->where(['Email'=>$email, 'Password'=>$password], $remember)->get();
+                         if(count($useEmail) > 0){
+                            $check = 1;
+                        }
+                    }
+                    if($check > 0){
+                        
+                        $persons = DB::table('companys')->select('Name', 'id', 'credits')->where(['Email'=>$email])->get();
+                        $persons2 = DB::table('companys')->select('Name', 'id', 'credits')->where(['Phone'=>$phone])->get();
+                        if((count($persons) > 0)){
+                     
                         foreach ($persons as $member)
                             {
-                                $_SESSION['name'] = $member->name;
-                                 
+                                $FirstName = $member->Name;
+                                $credits = $member->credits;
+                                $id = $member->id;
                             }
+
+                        }else{
+                         
+                        foreach ($persons2 as $member)
+                            {
+                                $FirstName = $member->Name;
+                                $credits = $member->credits;
+                                $id = $member->id;
+                            } 
+                        }
+
+                        // $sessionValue = $request->session()->put('id', $id);
+                        // if($request->session()->has('id')){
+                        //     $sessionValue = $request->session()->get('id');
+                           
+                        // }
+                                        
                         return response(array(
                             'Message' => 'Log in successful',
                             'status' => 'success',
-                            $_SESSION['name'] = $member->name,
-                            'count' => $count,
+                            'FirstName' => $FirstName,
                             
+                            'credits' => $credits,
+                            'id' => $id,
+                           
 
                            ),200);
                     }else{
@@ -443,6 +484,9 @@ class RegisterController extends Controller
                     }
 
         }
+
+
+
 
     public function forgot(Request $request){
         $email = $request->input('email');
